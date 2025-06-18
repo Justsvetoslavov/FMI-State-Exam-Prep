@@ -15,6 +15,7 @@ private:
 	Node* head, * tail;
 
 public:
+// I think you don't need move for the state exam
 	SinglyLinkedList();
 	SinglyLinkedList(const SinglyLinkedList<T>&);
 	SinglyLinkedList(SinglyLinkedList<T>&&) noexcept;

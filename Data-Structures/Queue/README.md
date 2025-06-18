@@ -7,7 +7,7 @@ class Queue {
 public:
 	void push(const T& obj);
 	void pop();
-	const T& peek() const;
+	const T& peek() const; // front
 
 	bool isEmpty() const;
 	size_t getSize() const;

@@ -1,7 +1,8 @@
+#pragma once
+#include <exception>
 #include <iostream>
 
-// Wrote it two years ago, not verified!
-// Create PR if you see mistakes
+// reviewed
 template<typename T>
 class DoublyLinkedList {
 private:

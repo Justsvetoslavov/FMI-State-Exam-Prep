@@ -44,6 +44,7 @@ public:
 	void insert(const T&);
 	void remove(const T&);
 
+	// might not need these
 	void dfs() const;
 	void iterativeDfs() const;
 	void bfs() const;

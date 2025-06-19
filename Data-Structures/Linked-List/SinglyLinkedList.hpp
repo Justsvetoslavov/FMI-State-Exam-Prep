@@ -1,6 +1,7 @@
 #include <iostream>
 #include <utility>
 
+// reviewed
 template<typename T>
 class SinglyLinkedList {
 private:
@@ -9,35 +10,32 @@ private:
 		Node* next;
 
 		Node(const T& value, Node* next = nullptr)
-			: value(value), next(next) { }
+			: value(value), next(next) {
+		}
 	};
 
 	Node* head, * tail;
+	size_t size = 0;
 
 public:
-// I think you don't need move for the state exam
+	// I think you don't need move for the state exam
 	SinglyLinkedList();
 	SinglyLinkedList(const SinglyLinkedList<T>&);
-	SinglyLinkedList(SinglyLinkedList<T>&&) noexcept;
 	SinglyLinkedList<T>& operator=(const SinglyLinkedList<T>&);
-	SinglyLinkedList<T>& operator=(SinglyLinkedList<T>&&) noexcept;
 	~SinglyLinkedList();
 
 	void push_front(const T&); // oh no move semantics are missing for push_fron, push_back and insert
 	void push_back(const T&);
 	void pop_front();
 	void pop_back();
-	void insert(const T&, size_t);
-	void remove(size_t);
+	void remove(const T&);
 	bool contains(const T&) const;
+	size_t getSize() const;
 
 	const T& front() const;
 	const T& back() const;
 
-	void print() const;
-
 private:
-	void moveFrom(SinglyLinkedList<T>&&) noexcept;
 	void copyFrom(const SinglyLinkedList<T>&);
 	void free();
 };
@@ -53,11 +51,6 @@ SinglyLinkedList<T>::SinglyLinkedList(const SinglyLinkedList<T>& other) {
 }
 
 template<typename T>
-SinglyLinkedList<T>::SinglyLinkedList(SinglyLinkedList<T>&& other) noexcept {
-	moveFrom(std::move(other));
-}
-
-template<typename T>
 SinglyLinkedList<T>& SinglyLinkedList<T>::operator=(const SinglyLinkedList<T>& other) {
 	if (this != &other) {
 		free();
@@ -68,26 +61,8 @@ SinglyLinkedList<T>& SinglyLinkedList<T>::operator=(const SinglyLinkedList<T>& o
 }
 
 template<typename T>
-SinglyLinkedList<T>& SinglyLinkedList<T>::operator=(SinglyLinkedList<T>&& other) noexcept {
-	if (this != &other) {
-		free();
-		moveFrom(std::move(other));
-	}
-
-	return *this;
-}
-
-template<typename T>
 SinglyLinkedList<T>::~SinglyLinkedList() {
 	free();
-}
-
-template<typename T>
-void SinglyLinkedList<T>::moveFrom(SinglyLinkedList<T>&& other) noexcept {
-	head = other.head;
-	tail = other.tail;
-
-	other.head = other.tail = nullptr;
 }
 
 template<typename T>
@@ -111,6 +86,7 @@ void SinglyLinkedList<T>::free() {
 	}
 
 	head = tail = nullptr;
+	size = 0;
 }
 
 template <typename T>
@@ -124,6 +100,7 @@ void SinglyLinkedList<T>::push_back(const T& value) {
 		tail->next = newNode;
 		tail = tail->next;
 	}
+	size++;
 }
 
 template<typename T>
@@ -137,12 +114,13 @@ void SinglyLinkedList<T>::push_front(const T& value) {
 		newNode->next = head;
 		head = newNode;
 	}
+	size++;
 }
 
 template<typename T>
 void SinglyLinkedList<T>::pop_front() {
 	if (!head) {
-		throw std::length_error("List is empty");
+		throw std::exception("List is empty");
 	}
 
 	Node* temp = head;
@@ -153,12 +131,18 @@ void SinglyLinkedList<T>::pop_front() {
 	if (!head) {
 		tail = nullptr;
 	}
+	size--;
 }
 
 template<typename T>
 void SinglyLinkedList<T>::pop_back() {
 	if (!head) {
 		throw std::length_error("List is empty");
+	}
+	// watch out da ne se vikat vzaimno po tozi nachin pop_front i pop_back!!!
+	if (head == tail) {
+		pop_front();
+		return;
 	}
 
 	Node* prev = nullptr;
@@ -168,45 +152,20 @@ void SinglyLinkedList<T>::pop_back() {
 		iter = iter->next;
 	}
 
-	if (iter == head) { // in case we had only one element
-		head = tail = nullptr;
-	}
-	else {
-		prev->next = nullptr;
-		tail = prev;
-	}
+	prev->next = nullptr;
+	tail = prev;
 
 	delete iter;
+	size--;
 }
 
 template<typename T>
-void SinglyLinkedList<T>::insert(const T& value, size_t index) {
-	if (index == 0) {
-		push_front(value);
-		return;
+void SinglyLinkedList<T>::remove(const T& element) {
+	if (!head) {
+		throw std::exception("List is empty");
 	}
 
-	Node* prev = nullptr;
-	Node* iter = head;
-	for (size_t i = 0; i < index; i++) {
-		if (!iter) {
-			throw std::out_of_range("Index out of range");
-		}
-
-		prev = iter;
-		iter = iter->next;
-	}
-
-	Node* newNode = new Node(value, iter);
-	prev->next = newNode;
-	if (tail == prev) {
-		tail = newNode;
-	}
-}
-
-template<typename T>
-void SinglyLinkedList<T>::remove(size_t index) {
-	if (index == 0) {
+	if (head->value == element) {
 		pop_front();
 		return;
 	}
@@ -214,9 +173,9 @@ void SinglyLinkedList<T>::remove(size_t index) {
 	Node* prev = nullptr;
 	Node* iter = head;
 
-	for (size_t i = 0; i < index; i++) {
-		if (!iter->next) {
-			throw std::out_of_range("Index out of range");
+	for (iter != nullptr) {
+		if (iter->value == element) {
+			break;
 		}
 
 		prev = iter;
@@ -229,6 +188,7 @@ void SinglyLinkedList<T>::remove(size_t index) {
 	}
 
 	delete iter;
+	size--;
 }
 
 template<typename T>
@@ -247,6 +207,11 @@ bool SinglyLinkedList<T>::contains(const T& value) const {
 }
 
 template<typename T>
+size_t SinglyLinkedList<T>::getSize() const {
+	return size;
+}
+
+template<typename T>
 const T& SinglyLinkedList<T>::front() const {
 	if (!head) {
 		throw std::length_error("List is empty");
@@ -262,18 +227,6 @@ const T& SinglyLinkedList<T>::back() const {
 	}
 
 	return tail->value;
-}
-
-template<typename T>
-void SinglyLinkedList<T>::print() const {
-	Node* iter = head;
-
-	while (iter) {
-		std::cout << iter->value << " ";
-		iter = iter->next;
-	}
-
-	std::cout << "\n";
 }
 
 //int main() {

@@ -38,6 +38,8 @@ std::vector<Area> getAreas(int matrix[1000][1000], int r, int c) {
 			}
 		}
 	}
+
+	return areas;
 }
 
 int main() {

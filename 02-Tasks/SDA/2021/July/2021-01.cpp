@@ -7,6 +7,7 @@ using namespace std;
 struct Area {
 	int sum;
 	int count;
+	vector<pair<int, int>> points;
 };
 
 void dfs(int matrix[1000][1000], int r, int c, int i, int j, Area& area) {
@@ -16,6 +17,7 @@ void dfs(int matrix[1000][1000], int r, int c, int i, int j, Area& area) {
 
 	area.sum += matrix[i][j];
 	area.count++;
+	area.points.push_back({ i, j });
 	matrix[i][j] = 0; // Mark as visited
 
 	dfs(matrix, r, c, i - 1, j, area);

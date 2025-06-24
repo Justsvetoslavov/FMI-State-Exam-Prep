@@ -24,6 +24,11 @@ void dfs(int matrix[1000][1000], int r, int c, int i, int j, Area& area) {
 	dfs(matrix, r, c, i, j - 1, area);
 	dfs(matrix, r, c, i, j + 1, area);
 	dfs(matrix, r, c, i + 1, j, area);
+	
+	dfs(matrix, r, c, i + 1, j + 1, area);
+	dfs(matrix, r, c, i + 1, j - 1, area);
+	dfs(matrix, r, c, i - 1, j + 1, area);
+	dfs(matrix, r, c, i - 1, j - 1, area);
 }
 
 std::vector<Area> getAreas(int matrix[1000][1000], int r, int c) {

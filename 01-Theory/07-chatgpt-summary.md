@@ -47,6 +47,19 @@
     - Производител: `free_bytes.wait(); write; ready_bytes.signal();`
     - Потребител: `ready_bytes.wait(); read; free_bytes.signal();`
 - **Pipe с n елемента (буфер/опашка) със семафори и mutex-и**:
-    - Семaфори: `mutex_read`, `mutex_write`, `free_bytes (n)`, `ready_bytes (0)`
-    - Производител: `free_bytes.wait(); mutex_write.wait(); add; mutex_write.signal(); ready_bytes.signal();`
-    - Потребител: `ready_bytes.wait(); mutex_read.wait(); retrieve; mutex_read.signal(); free_bytes.signal();`
+```
+Semaphores: mutex_read, mutex_write, free_bytes, ready_bytes 
+
+Data structures: Queue 
+Free_bytes.init(n) 
+Ready_bytes.init(0) 
+Mutex_read.init(1) 
+Mutex_write.init(1) 
+ 
+Producer:                   Consumer: 
+    free_bytes.wait()           ready_bytes.wait()  
+    mutex_write.wait()          mutex_read.wait() 
+        { add to Queue }            { retrieve from Queue } 
+    mutex_write.signal()        mutex_read.signal() 
+    ready_bytes.signal()        free_bytes.signal()
+```

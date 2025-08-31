@@ -1,6 +1,13 @@
 {
     "files.associations": {
         "vector": "cpp",
-        "xstring": "cpp"
+        "xstring": "cpp",
+        "*.hpp": "cpp"
+    },
+    "search.exclude": {
+        "**/__pycache__": true,
+        "**/*.exe": true,
+        "**/*.o": true,
+        "**/*.obj": true
     }
 }

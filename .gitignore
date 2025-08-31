@@ -1,2 +1,37 @@
-02-Tasks/Task-Coverage
+# Personal progress tracking files/folders (should be ignored)
+# These are used for tracking personal study progress and coverage.
+# Do not commit these to the repository.
 01-Theory/Theory-Coverage.md
+02-Tasks/Task-Coverage
+
+# General ignores for this repository
+# OS/Editor/Build artifacts
+# VS Code settings
+.vscode/
+
+# Windows system files
+Thumbs.db
+Desktop.ini
+
+# macOS system files
+.DS_Store
+
+# Python cache
+__pycache__/
+
+# C++ build artifacts
+*.exe
+*.obj
+*.o
+*.out
+*.log
+
+# PDF temporary files
+*.pdf~
+
+# Markdown backup files
+*.md~
+
+# Miscellaneous
+*.tmp
+*.bak

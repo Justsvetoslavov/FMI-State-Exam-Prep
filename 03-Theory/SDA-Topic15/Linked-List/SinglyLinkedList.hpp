@@ -65,9 +65,11 @@ SinglyLinkedList<T>::~SinglyLinkedList() {
 	free();
 }
 
+// can be optimized with recursion
 template<typename T>
 void SinglyLinkedList<T>::copyFrom(const SinglyLinkedList<T>& other) {
 	Node* iter = other.head;
+	size = other.size;
 
 	while (iter) {
 		push_back(iter->value);

@@ -7,24 +7,48 @@
 template<typename T>
 class BinaryTree {
 private:
-    T data;
-    BinaryTree<T>* left;
-    BinaryTree<T>* right;
+	T data;
+	BinaryTree<T>* left;
+	BinaryTree<T>* right;
 
 	void _printInOrder(BinaryTree<T>* node);
 	void _printPreOrder(BinaryTree<T>* node);
 	void _printPostOrder(BinaryTree<T>* node);
 
+	bool _search(const BinaryTree<T>* node, const T& val) const;
+
 public:
 
-    BinaryTree(const T& value, BinaryTree<T>* left = nullptr, BinaryTree<T>* right = nullptr)
-		: data(value), left(left), right(right) {}
+	BinaryTree(const T& value, BinaryTree<T>* left = nullptr, BinaryTree<T>* right = nullptr)
+		: data(value), left(left), right(right) { }
 
-    void printInOrder();
+	bool search(const T& val) const;
+	// add - idea - add to the first empty spot on a level
+
+
+	void printInOrder();
 	void printPreOrder();
-    void printPostOrder();
+	void printPostOrder();
 	void printLevelOrder();
 };
+
+template<typename T>
+bool BinaryTree<T>::_search(const BinaryTree<T>* node, const T& val) const {
+	if (!node) {
+		return false;
+	}
+
+	if (node->data == val) {
+		return true;
+	}
+
+	return _search(node->left, val) || _search(node->right, val);
+}
+
+template<typename T>
+bool BinaryTree<T>::search(const T& val) const {
+	return _search(this->root, val);
+}
 
 template<typename T>
 void BinaryTree<T>::_printInOrder(BinaryTree<T>* node) {

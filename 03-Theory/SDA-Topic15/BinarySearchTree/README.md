@@ -5,12 +5,8 @@
 ```c++
 class BinarySearchTree {
 public:
-	bool contains(const T&) const;
-	void insert(const T&);
-	void remove(const T&);
-
-// ???
-	void dfs() const;
-	void bfs() const;
+ bool contains(const T&) const;
+ void insert(const T&);
+ void remove(const T&);
 };
 ```

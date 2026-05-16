@@ -14,36 +14,34 @@ private:
 		}
 	};
 
-	Node* head, * tail;
+	Node* head = nullptr, * tail = nullptr;
 	size_t size = 0;
 
 public:
-	// I think you don't need move for the state exam
-	SinglyLinkedList();
+	SinglyLinkedList() = default;
 	SinglyLinkedList(const SinglyLinkedList<T>&);
 	SinglyLinkedList<T>& operator=(const SinglyLinkedList<T>&);
 	~SinglyLinkedList();
 
-	void push_front(const T&); // oh no move semantics are missing for push_fron, push_back and insert
-	void push_back(const T&);
-	void pop_front();
-	void pop_back();
-	void remove(const T&);
-	bool contains(const T&) const;
-	size_t getSize() const;
+    void push_front(const T&);
+    void push_back(const T&);
+    // insertAt is probably an overkill for the state exam
+    void pop_front();
+    void pop_back();
+    const T& front() const;
+    const T& back() const;
 
-	const T& front() const;
-	const T& back() const;
+    void remove(const T&);
+    void clear(); // might be overkill for the state exam
+    bool contains(const T&) const;
+    bool isEmpty() const;
+    size_t getSize() const;
 
 private:
 	void copyFrom(const SinglyLinkedList<T>&);
 	void free();
 };
 
-template<typename T>
-SinglyLinkedList<T>::SinglyLinkedList() {
-	head = tail = nullptr;
-}
 
 template<typename T>
 SinglyLinkedList<T>::SinglyLinkedList(const SinglyLinkedList<T>& other) {
@@ -69,9 +67,10 @@ SinglyLinkedList<T>::~SinglyLinkedList() {
 template<typename T>
 void SinglyLinkedList<T>::copyFrom(const SinglyLinkedList<T>& other) {
 	Node* iter = other.head;
-	size = other.size;
+	size = 0;
 
 	while (iter) {
+		// this will update the size also
 		push_back(iter->value);
 		iter = iter->next;
 	}
@@ -175,13 +174,17 @@ void SinglyLinkedList<T>::remove(const T& element) {
 	Node* prev = nullptr;
 	Node* iter = head;
 
-	for (iter != nullptr) {
+	while (iter != nullptr) {
 		if (iter->value == element) {
 			break;
 		}
 
 		prev = iter;
 		iter = iter->next;
+	}
+
+	if (!iter) {
+		return; // element not found
 	}
 
 	prev->next = iter->next;
@@ -191,6 +194,19 @@ void SinglyLinkedList<T>::remove(const T& element) {
 
 	delete iter;
 	size--;
+}
+
+template<typename T>
+bool SinglyLinkedList<T>::isEmpty() const {
+	return size == 0;
+}
+
+template<typename T>
+void SinglyLinkedList<T>::clear() {
+	free();
+	// while(!isEmpty()) {
+	// 	pop_front();
+	// }
 }
 
 template<typename T>

@@ -9,10 +9,9 @@ private:
 
 public:
 	void push(const T& obj);
-	void push(T&& obj);
-
 	void pop();
-	const T& peek() const;
+	const T& peek() const; // top
+
 	bool isEmpty() const;
 	size_t getSize() const;
 	void clear();
@@ -25,15 +24,6 @@ void FixedLengthStack<T, capacity>::push(const T& obj) {
 	}
 
 	data[size++] = obj;
-}
-
-template<typename T, const size_t capacity>
-void FixedLengthStack<T, capacity>::push(T&& obj) {
-	if (size == capacity) {
-		throw std::exception("Stack is full");
-	}
-
-	data[size++] = std::move(obj);
 }
 
 template<typename T, const size_t capacity>

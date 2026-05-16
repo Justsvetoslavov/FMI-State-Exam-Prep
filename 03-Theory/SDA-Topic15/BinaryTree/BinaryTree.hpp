@@ -23,12 +23,14 @@ public:
 		: data(value), left(left), right(right) { }
 
 	bool search(const T& val) const;
-	// add - idea - add to the first empty spot on a level
+	// add to the first free position in level order
+	void add(const T& val);
 
 
 	void printInOrder();
 	void printPreOrder();
 	void printPostOrder();
+	// only if you have queue from the state exam topic!!!
 	void printLevelOrder();
 };
 
@@ -47,7 +49,27 @@ bool BinaryTree<T>::_search(const BinaryTree<T>* node, const T& val) const {
 
 template<typename T>
 bool BinaryTree<T>::search(const T& val) const {
-	return _search(this->root, val);
+	return _search(this, val);
+}
+
+template<typename T>
+void BinaryTree<T>::add(const T& val) {
+	std::queue<BinaryTree<T>*> q;
+	q.push(this);
+	while (!q.empty()) {
+		BinaryTree<T>* current = q.front();
+		q.pop();
+		if (!current->left) {
+			current->left = new BinaryTree<T>(val);
+			return;
+		}
+		q.push(current->left);
+		if (!current->right) {
+			current->right = new BinaryTree<T>(val);
+			return;
+		}
+		q.push(current->right);
+	}
 }
 
 template<typename T>

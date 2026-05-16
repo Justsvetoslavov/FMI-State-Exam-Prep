@@ -2,6 +2,9 @@
 #include <exception>
 #include <iostream>
 
+// NEVER WRITE THIS ON THE STATE EXAM
+// Just for demonstration purposes - this is how you can implement a doubly linked list
+
 // reviewed
 template<typename T>
 class DoublyLinkedList {
@@ -14,36 +17,33 @@ private:
 			: value(value), prev(prev), next(next) { }
 	};
 
-	Node* head, * tail;
-	size_t length = 0;
+	Node* head = nullptr, * tail = nullptr;
+	size_t size = 0;
 public:
 	// missing move semantics
-	DoublyLinkedList();
+	DoublyLinkedList() = default;
 	DoublyLinkedList(const DoublyLinkedList<T>&);
 	DoublyLinkedList<T>& operator=(const DoublyLinkedList<T>&);
 	~DoublyLinkedList();
 
-	void push_front(const T& value);
-	void push_back(const T& value);
-	void pop_front();
-	void pop_back();
-	bool contains(const T& value) const;
+    void push_front(const T&);
+    void push_back(const T&);
+    // insertAt is probably an overkill for the state exam
+    void pop_front();
+    void pop_back();
+    const T& front() const;
+    const T& back() const;
 
-	const T& front() const;
-	const T& back() const;
-	size_t getLength() const;
-
-	void print() const;
+    void remove(const T&);
+    void clear(); // might be overkill for the state exam
+    bool contains(const T&) const;
+    bool isEmpty() const;
+    size_t getSize() const;
 
 private:
 	void copyFrom(const DoublyLinkedList<T>&);
 	void free();
 };
-
-template<typename T>
-DoublyLinkedList<T>::DoublyLinkedList() {
-	head = tail = nullptr;
-}
 
 template<typename T>
 DoublyLinkedList<T>::DoublyLinkedList(const DoublyLinkedList<T>& other) {
@@ -84,7 +84,7 @@ void DoublyLinkedList<T>::free() {
 		iter = next;
 	}
 
-	length = 0;
+	size = 0;
 	head = tail = nullptr;
 }
 
@@ -93,28 +93,28 @@ template<typename T>
 void DoublyLinkedList<T>::push_front(const T& value) {
 	if (!head) {
 		head = tail = new Node(value);
-		length = 1;
+		size = 1;
 		return;
 	}
 
 	Node* newNode = new Node(value, nullptr, head);
 	head->prev = newNode;
 	head = newNode;
-	length++;
+	size++;
 }
 
 template<typename T>
 void DoublyLinkedList<T>::push_back(const T& value) {
 	if (!tail) {
 		head = tail = new Node(value);
-		length = 1;
+		size = 1;
 		return;
 	}
 
 	Node* newNode = new Node(value, tail);
 	tail->next = newNode;
 	tail = newNode;
-	length++;
+	size++;
 }
 
 template<typename T>
@@ -133,7 +133,7 @@ void DoublyLinkedList<T>::pop_front() {
 	}
 
 	delete toDelete;
-	length--;
+	size--;
 }
 
 template<typename T>
@@ -152,7 +152,7 @@ void DoublyLinkedList<T>::pop_back() {
 	}
 
 	delete toDelete;
-	length--;
+	size--;
 }
 
 template<typename T>
@@ -189,18 +189,39 @@ const T& DoublyLinkedList<T>::back() const {
 }
 
 template<typename T>
-size_t DoublyLinkedList<T>::getLength() const {
-	return length;
+size_t DoublyLinkedList<T>::getSize() const {
+	return size;
 }
 
 template<typename T>
-void DoublyLinkedList<T>::print() const {
+bool DoublyLinkedList<T>::isEmpty() const {
+	return size == 0;
+}
+
+template<typename T>
+void DoublyLinkedList<T>::clear() {
+	free();
+}
+
+// claude generated
+template<typename T>
+void DoublyLinkedList<T>::remove(const T& element) {
 	Node* iter = head;
 
 	while (iter) {
-		std::cout << iter->value << " ";
+		if (iter->value == element) {
+			if (iter == head) {
+				pop_front();
+			} else if (iter == tail) {
+				pop_back();
+			} else {
+				iter->prev->next = iter->next;
+				iter->next->prev = iter->prev;
+				delete iter;
+				size--;
+			}
+			return;
+		}
 		iter = iter->next;
 	}
-
-	std::cout << '\n';
 }

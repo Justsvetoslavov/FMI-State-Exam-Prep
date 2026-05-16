@@ -5,13 +5,17 @@
 template<typename T>
 class LLStack {
 private:
-	// You should not use std::list here
-	// imagine that there is a custom implementation of the list here (Singly or doubly)
-	// depending on it you
-	// might have to add size property
-	// might have to change the implementation of some props
+	// Imagine that you got linked list + stack on this topic at the state exam
+	//
+	// You should not use std::list here (here you will use the LL you already implemented)
+	//
+	// there is a custom implementation of the list here (Singly or doubly)
+	// it depends on you
+	// - you might have to add size property
+	// - you might have to change the implementation of some props
 	std::list<T> data;
 public:
+	// No memory management - already handled by the list
 	void push(const T& obj);
 	void pop();
 	const T& peek() const; // top

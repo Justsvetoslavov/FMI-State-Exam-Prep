@@ -123,13 +123,16 @@ struct Node {
 ```
 
 #### Интерфейс на списъка
+
+```c++
 class LinkedList {
 private:
 	struct Node {}; // зависимост какъв ви е node-a
 
 	Node* head, * tail;
 	size_t size = 0;
- }
+}
+```
 
 ### Характеристики на двете имплементации
 #### Списък с една връзка

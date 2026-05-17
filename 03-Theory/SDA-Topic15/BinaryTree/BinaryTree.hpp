@@ -22,6 +22,8 @@ public:
 	BinaryTree(const T& value, BinaryTree<T>* left = nullptr, BinaryTree<T>* right = nullptr)
 		: data(value), left(left), right(right) { }
 
+	// TODO: memory management as in the BST!!!
+
 	bool search(const T& val) const;
 	// add to the first free position in level order
 	void add(const T& val);

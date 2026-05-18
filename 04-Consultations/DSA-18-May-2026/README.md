@@ -8,7 +8,7 @@
 - https://github.com/Justsvetoslavov/FMI-State-Exam-Prep/blob/master/03-Theory/SDA-Topic15/README.md
   - още за LinkedList https://github.com/TeogopK/Data_Structures_and_Algorithms_FMI/tree/main/Week_04/Seminar
   - още за стеки и опашка https://github.com/TeogopK/Data_Structures_and_Algorithms_FMI/tree/main/Week_05/Seminar
-  - още за дървета и bsthttps://github.com/TeogopK/Data_Structures_and_Algorithms_FMI/tree/main/Week_06/Seminar
+  - още за дървета и bst https://github.com/TeogopK/Data_Structures_and_Algorithms_FMI/tree/main/Week_06/Seminar
 
 ## Теория
 

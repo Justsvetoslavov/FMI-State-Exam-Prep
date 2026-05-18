@@ -110,6 +110,7 @@ bool BinarySearchTree<T>::_contains(const Node* current, const T& value) const {
 	return current->value > value ? _contains(current->left, value) : _contains(current->right, value);
 }
 
+// altenative implementation - https://github.com/TeogopK/Data_Structures_and_Algorithms_FMI/blob/main/Week_06/Seminar/Solutions/Fundamental/TreeOperations/DeleteNodeInBST/cpp_solution_double_pointer.cpp
 template <typename T>
 BinarySearchTree<T>::Node* BinarySearchTree<T>::_remove(Node* current, const T& value) {
 	if (!current) {
